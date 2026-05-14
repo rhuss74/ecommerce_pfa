@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dar Sanaâ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-image { overflow:hidden; }
+        .product-image img { width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;transition:transform 0.3s; }
+        .product-image img:hover { transform:scale(1.05); }
+        #lightbox { display:none;position:fixed;inset:0 !important;background:rgba(0,0,0,0.88) !important;z-index:99999 !important;align-items:center;justify-content:center;flex-direction:column; }
+        #lightbox-img { max-width:90vw;max-height:82vh;object-fit:contain;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+        #lightbox-close { position:fixed;top:18px;right:28px;color:#fff;font-size:2.8rem;cursor:pointer;background:none;border:none;opacity:0.85; }
+        #lightbox-close:hover { opacity:1; }
+        #lightbox-caption { margin-top:14px;color:#fff;font-size:1rem;background:rgba(0,0,0,0.45);padding:6px 20px;border-radius:20px; }
+    </style>
+</head>
+<body>
+
+    <div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88)!important;z-index:99999;align-items:center;justify-content:center;flex-direction:column;">
+        <button id="lightbox-close">&times;</button>
+        <img id="lightbox-img" src="" alt="">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="logo">
+                        <img src="pics/logo-webecco.png" alt="logo">
+                        <span>Dar Sanaâ</span>
+                    </div>
+                    <ul class="nav-menu">
+                        <li><a href="#home">Accueil</a></li>
+                        <li><a href="#products">Produits</a></li>
+                        <li><a href="#categories">Catégories</a></li>
+                        <li><a href="#artisans">Artisans</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                    <div class="nav-actions">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                        <button class="cart-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></button>
+                        <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i> Mon Compte</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Découvrez l'Art Authentique</h1>
+            <p class="hero-subtitle">Chaque pièce est une histoire façonnée avec amour</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explorer Maintenant</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('artisans').scrollIntoView({behavior:'smooth'})">En Savoir Plus</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card"><i class="fas fa-box-open"></i><h3 id="stat-produits">--</h3><p>Produits Uniques</p></div>
+                <div class="stat-card"><i class="fas fa-users"></i><h3 id="stat-artisans">--</h3><p>Artisans Partenaires</p></div>
+                <div class="stat-card"><i class="fas fa-heart"></i><h3>2000+</h3><p>Clients Satisfaits</p></div>
+                <div class="stat-card"><i class="fas fa-shipping-fast"></i><h3>24h</h3><p>Livraison Rapide</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="categories" id="categories">
+        <div class="container">
+            <h2 class="section-title">Nos Catégories</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="filterByCategory('Ceramique')"><div class="category-icon"><i class="fas fa-palette"></i></div><h3>Poterie & Céramique</h3><p>Pièces uniques façonnées à la main</p></div>
+                <div class="category-card" onclick="filterByCategory('Bijoux')"><div class="category-icon"><i class="fas fa-gem"></i></div><h3>Bijoux Artisanaux</h3><p>Créations originales et élégantes</p></div>
+                <div class="category-card" onclick="filterByCategory('Textile')"><div class="category-icon"><i class="fas fa-tshirt"></i></div><h3>Textile & Mode</h3><p>Vêtements et accessoires faits main</p></div>
+                <div class="category-card" onclick="filterByCategory('Decoration')"><div class="category-icon"><i class="fas fa-couch"></i></div><h3>Décoration</h3><p>Objets déco pour embellir votre intérieur</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">Produits Populaires</h2>
+            <div class="products-grid" id="products-grid">
+                <div style="text-align:center;padding:40px;grid-column:1/-1;color:#999"><i class="fas fa-spinner fa-spin" style="font-size:2rem"></i><p>Chargement des produits...</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="artisans" id="artisans">
+        <div class="container">
+            <h2 class="section-title">Nos Artisans</h2>
+            <p class="section-subtitle">Rencontrez les talents derrière nos créations</p>
+            <div class="artisans-grid" id="artisans-grid">
+                <div style="text-align:center;padding:40px;grid-column:1/-1;color:#999"><i class="fas fa-spinner fa-spin" style="font-size:2rem"></i><p>Chargement...</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Restez Informé</h2>
+                <p>Inscrivez-vous à notre newsletter pour recevoir nos offres exclusives</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email">
+                    <button class="btn btn-primary">S'inscrire</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo"><img src="pics/logo-webecco.png" alt="logo"><span>Dar Sanaâ</span></div>
+                    <p>Votre destination pour des produits artisanaux authentiques et de qualité.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col"><h3>Liens Rapides</h3><ul><li><a href="#">À Propos</a></li><li><a href="#artisans">Nos Artisans</a></li><li><a href="#">Blog</a></li><li><a href="#">Carrières</a></li></ul></div>
+                <div class="footer-col"><h3>Support</h3><ul><li><a href="#">FAQ</a></li><li><a href="#">Livraison</a></li><li><a href="#">Retours</a></li><li><a href="#">Contact</a></li></ul></div>
+                <div class="footer-col"><h3>Contact</h3><ul class="contact-info"><li><i class="fas fa-phone"></i> +212 532458870</li><li><i class="fas fa-envelope"></i> contact@darsanaa.ma</li><li><i class="fas fa-map-marker-alt"></i> Casablanca, Maroc</li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2026 Dar Sanaâ. Tous droits réservés.</p></div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    var API_BASE = 'http://localhost:5000/api';
+    var categoryIcons = { 'Ceramique':'fas fa-palette','Bijoux':'fas fa-gem','Maroquinerie':'fas fa-shopping-bag','Decoration':'fas fa-paint-brush','Textile':'fas fa-tshirt' };
+    var allProducts = [];
+    var activeCategory = null;
+
+    // Lightbox
+    document.getElementById('lightbox-close').onclick = function() { document.getElementById('lightbox').style.display = 'none'; };
+    document.getElementById('lightbox').onclick = function(e) { if (e.target === this) this.style.display = 'none'; };
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') document.getElementById('lightbox').style.display = 'none'; });
+
+    function openLightbox(src, caption) {
+        document.getElementById('lightbox-img').src = src;
+        document.getElementById('lightbox-caption').textContent = caption;
+        document.getElementById('lightbox').style.display = 'flex';
+    }
+
+    function starsHTML(r) {
+        var h = '';
+        for (var i = 1; i <= 5; i++) {
+            if (i <= Math.floor(r)) h += '<i class="fas fa-star"></i>';
+            else if (i - r < 1) h += '<i class="fas fa-star-half-alt"></i>';
+            else h += '<i class="far fa-star"></i>';
+        }
+        return h;
+    }
+
+    function renderProducts(products) {
+        var grid = document.getElementById('products-grid');
+        grid.innerHTML = '';
+        if (!products.length) { grid.innerHTML = '<div style="text-align:center;padding:40px;grid-column:1/-1;color:#999">Aucun produit disponible.</div>'; return; }
+        products.forEach(function(p) {
+            var card = document.createElement('div');
+            card.className = 'product-card';
+            var icon = categoryIcons[p.categorie] || 'fas fa-box';
+            var artisanNom = (p.artisan_id && p.artisan_id.nom) ? p.artisan_id.nom : 'Artisan';
+            var rupture = p.stock === 0 ? '<p style="color:#e53e3e;font-size:12px;margin-top:4px"><i class="fas fa-times-circle"></i> Rupture de stock</p>' : '';
+
+            // Image div
+            var imgDiv = document.createElement('div');
+            imgDiv.className = 'product-image';
+            imgDiv.style.cssText = 'background:#f5ede3;display:flex;align-items:center;justify-content:center;height:220px;overflow:hidden;border-radius:12px 12px 0 0;';
+
+            if (p.image) {
+                var img = document.createElement('img');
+                img.src = p.image;
+                img.alt = p.nom;
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;cursor:zoom-in;';
+                (function(src, nom) {
+                    img.addEventListener('click', function() { openLightbox(src, nom); });
+                })(p.image, p.nom);
+                imgDiv.appendChild(img);
+            } else {
+                imgDiv.innerHTML = '<i class="' + icon + '" style="font-size:4rem;color:#c17f3e;opacity:0.7"></i>';
+            }
+
+            card.appendChild(imgDiv);
+            card.innerHTML += '<div class="product-info"><h3>' + p.nom + '</h3><p class="product-artisan">Par ' + artisanNom + '</p><div class="product-rating">' + starsHTML(4.5) + '<span>(4.5)</span></div><div class="product-footer"><span class="product-price">' + p.prix + ' DH</span><button class="btn-add-cart" data-id="' + p._id + '"><i class="fas fa-cart-plus"></i></button></div>' + rupture + '</div>';
+            grid.appendChild(card);
+        });
+    }
+
+    function filterByCategory(cat) {
+        activeCategory = (activeCategory === cat) ? null : cat;
+        var filtered = activeCategory ? allProducts.filter(function(p) { return p.categorie === activeCategory; }) : allProducts;
+        renderProducts(filtered);
+        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+    }
+    window.filterByCategory = filterByCategory;
+
+    async function loadProducts() {
+        try {
+            var res = await fetch(API_BASE + '/produits');
+            var products = await res.json();
+            allProducts = products;
+            renderProducts(products);
+            document.getElementById('stat-produits').textContent = products.length + '+';
+        } catch(err) {
+            document.getElementById('products-grid').innerHTML = '<div style="text-align:center;padding:40px;grid-column:1/-1;color:#999">Impossible de charger les produits.</div>';
+        }
+    }
+
+    function loadArtisans() {
+        var artisans = [
+            { nom:'Mohammed Salim', specialty:'Céramiste', desc:'Passionné par la poterie depuis 15 ans', img:'pics/artsan-cera.jpeg' },
+            { nom:'Ahmed Alami', specialty:'Bijoutier', desc:'Maître artisan en orfèvrerie traditionnelle', img:'pics/artsan-bij.jpeg' },
+            { nom:'Fatima Beziouiya', specialty:'Maroquinière', desc:'Spécialiste du cuir et des sacs traditionnels', img:'pics/artis-woman3.jpeg' },
+            { nom:'Salma Tahiri', specialty:'Tisseuse', desc:'Artisane qui tisse des tapis à la main', img:'pics/Salma Tahiri.jpeg' },
+            { nom:'Hamza Idrissi', specialty:'Cirier', desc:'Spécialisé dans la fabrication de bougies artisanales', img:'pics/Hamza Idrissi.jpeg' },
+            { nom:'Aicha Laghmari', specialty:'Céramiste', desc:'Spécialisée dans la création de vases artisanaux', img:'pics/Aicha Laghmari.jpeg' }
+        ];
+        document.getElementById('artisans-grid').innerHTML = artisans.map(function(a) {
+            return '<div class="artisan-card"><div class="artisan-avatar"><img src="' + a.img + '" alt="' + a.nom + '" onerror="this.style.display=\'none\'"></div><h3>' + a.nom + '</h3><p class="artisan-specialty">' + a.specialty + '</p><p class="artisan-desc">' + a.desc + '</p></div>';
+        }).join('');
+        document.getElementById('stat-artisans').textContent = artisans.length + '+';
+    }
+
+    async function loadAndRender() {
+        await loadProducts();
+        // Attach lightbox to all product images
+        document.querySelectorAll('.product-image img').forEach(function(img) {
+            img.style.cursor = 'zoom-in';
+            img.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openLightbox(this.src, this.alt);
+            });
+        });
+        // Attach cart buttons - dispatch to script.js handler
+        document.querySelectorAll('.btn-add-cart').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var productId = this.dataset.id;
+                // Use the addToCart function from script.js if available
+                if (typeof addToCart === 'function') {
+                    addToCart(productId);
+                }
+            });
+        });
+    }
+    loadAndRender();
+    loadArtisans();
+    </script>
+</body>
+</html>
